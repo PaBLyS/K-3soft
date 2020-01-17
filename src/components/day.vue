@@ -56,6 +56,10 @@ export default {
 .day {
   display: flex;
 
+  div {
+    box-sizing: border-box;
+  }
+
   &-block {
     width: 25px;
     height: 40px;
