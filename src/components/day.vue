@@ -1,7 +1,7 @@
 <template>
   <div class="day" @mouseup="cursor = false" @mouseleave="cursor = false">
     <div :class="['day-block', 'day-label', oneCheck ? 'day-label__check' : null]">{{label}}</div>
-    <div class="day-block day-all" @click="editAllDay"></div>
+    <div :class="['day-block day-all', fullDay ? 'day-all__check' : null]" @click="editAllDay"></div>
     <div
       v-for="(item, index) in status"
       :class="{'day-block': true, 'day-hour': true, 'entered': item}"
@@ -74,6 +74,13 @@ export default {
   &-all {
     width: 40px;
     background-color: #447788;
+
+    &__check {
+      background-image: url("../../public/tick.svg");
+      background-size: 60%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
   }
 
   &-hour {
