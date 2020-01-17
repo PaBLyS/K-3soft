@@ -1,6 +1,12 @@
 <template>
   <div>
-    <day v-for="(value, label, index) in week" :label="label" :value="value" :key="label+index" />
+    <day
+      v-for="(value, label, index) in week"
+      :label="label"
+      :value="value"
+      :key="label+index"
+      ref="child"
+    />
     <div>
       <button @click="clearWeek" class="calendar-btn">Clear</button>
       <button @click="saveWeek" class="calendar-btn">Save</button>
@@ -20,7 +26,9 @@ export default {
     };
   },
   methods: {
-    clearWeek() {},
+    clearWeek() {
+      this.$refs.child.forEach(elem => elem.clearDay());
+    },
     saveWeek() {
       this.$store.dispatch("fetchWeek");
     }

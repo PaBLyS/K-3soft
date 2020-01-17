@@ -43,6 +43,10 @@ export default {
     editAllDay() {
       this.status = [...this.status.fill(!this.fullDay)];
       this.$store.commit("setWeek", { day: this.label, arr: this.status });
+    },
+    clearDay() {
+      this.status = [...this.status.fill(false)];
+      this.$store.commit("setWeek", { day: this.label, arr: this.status });
     }
   }
 };
