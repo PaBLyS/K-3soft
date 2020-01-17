@@ -1,11 +1,6 @@
 <template>
   <div>
-    <day
-      v-for="(value, label, index) in week"
-      :label="label"
-      :key="label+index"
-      @edit-day="editDay"
-    />
+    <day v-for="(value, label, index) in week" :label="label" :value="value" :key="label+index" />
   </div>
 </template>
 
@@ -16,24 +11,11 @@ export default {
   name: "calendar",
   components: { day },
   data() {
-    return {
-      week: {
-        mo: [{ bt: 240, et: 779 }],
-        tu: [],
-        we: [],
-        th: [
-          { bt: 240, et: 779 },
-          { bt: 1140, et: 1319 }
-        ],
-        fr: [{ bt: 660, et: 1019 }],
-        sa: [{ bt: 0, et: 1439 }],
-        su: []
-      }
-    };
+    return {};
   },
-  methods: {
-    editDay(day, item) {
-      // console.log(day);
+  computed: {
+    week() {
+      return this.$store.getters.getWeek;
     }
   }
 };

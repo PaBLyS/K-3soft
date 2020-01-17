@@ -16,37 +16,13 @@
 export default {
   name: "day",
   props: {
-    label: String
+    label: String,
+    value: Array
   },
   data() {
     return {
       cursor: false,
-      status: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
+      status: [...this.value]
     };
   },
   computed: {
@@ -62,10 +38,11 @@ export default {
       if (edit) this.cursor = true;
       if (!this.cursor) return;
       this.$set(this.status, index, !this.status[index]);
-      this.$emit("edit-day", this.label, this.status);
+      this.$store.commit("setWeek", { day: this.label, arr: this.status });
     },
     editAllDay() {
       this.status = [...this.status.fill(!this.fullDay)];
+      this.$store.commit("setWeek", { day: this.label, arr: this.status });
     }
   }
 };
