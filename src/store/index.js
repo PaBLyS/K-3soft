@@ -19,6 +19,7 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        // перетворення числового масиву, в масив з логічними даними
         getWeek(state) {
             let res = {}
 
@@ -33,10 +34,11 @@ export default new Vuex.Store({
                     }
                 })
             }
-            return res
+            return res // передача даних в змінну
         }
     },
     mutations: {
+        // перетворення масиву з логічними ланими, в масив числовлго типу
         setWeek(state, data) {
             const { arr, day } = data
             let new_arr = []
@@ -60,12 +62,13 @@ export default new Vuex.Store({
                     }
                 }
             })
-            state.week[day] = new_arr
+            state.week[day] = new_arr // збереження даних в store
         }
     },
     actions: {
+        // вивод результату в консоль
         fetchWeek(store) {
-            console.log(store.state.week)
+            console.log(store.state.week) 
         }
     },
     modules: {}

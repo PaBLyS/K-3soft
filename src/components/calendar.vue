@@ -4,6 +4,7 @@
       <div class="time-all">All day</div>
       <div class="time-hour" v-for="index in 8" :key="index">{{(index - 1) * 3}}:00</div>
     </div>
+    <!-- day компонент одного дня розбитий на години -->
     <day
       v-for="(value, label, index) in week"
       :label="label"
@@ -26,13 +27,15 @@ export default {
   components: { day },
   data() {
     return {
-      week: this.$store.getters.getWeek
+      week: this.$store.getters.getWeek // отримання даних з store
     };
   },
   methods: {
+    // виклик в дочірніх елементах функції для очищення дня
     clearWeek() {
       this.$refs.child.forEach(elem => elem.clearDay());
     },
+    // виклик функції для зберігання і відправки даних на сервер
     saveWeek() {
       this.$store.dispatch("fetchWeek");
     }
