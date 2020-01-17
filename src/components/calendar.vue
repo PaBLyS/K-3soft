@@ -1,6 +1,10 @@
 <template>
   <div>
     <day v-for="(value, label, index) in week" :label="label" :value="value" :key="label+index" />
+    <div>
+      <button @click="clearWeek" class="calendar-btn">Clear</button>
+      <button @click="saveWeek" class="calendar-btn">Save</button>
+    </div>
   </div>
 </template>
 
@@ -11,15 +15,23 @@ export default {
   name: "calendar",
   components: { day },
   data() {
-    return {};
+    return {
+      week: this.$store.getters.getWeek
+    };
   },
-  computed: {
-    week() {
-      return this.$store.getters.getWeek;
+  methods: {
+    clearWeek() {},
+    saveWeek() {
+      this.$store.dispatch("fetchWeek");
     }
   }
 };
 </script>
 
-<style>
+<style lang="scss">
+.calendar-btn {
+  margin: 10px;
+  padding: 8px 15px;
+  font-size: 18px;
+}
 </style>

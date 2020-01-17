@@ -23,8 +23,8 @@ export default new Vuex.Store({
             let res = {}
 
             for (let name in state.week) {
-                // res[name] = new Array(24)
-                res[name] = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+                res[name] = new Array(24)
+                res[name].fill(false)
                 state.week[name].forEach(elem => {
                     for (let i = 0; i < 24; i++) {
                         if (!res[name][i]) {
@@ -61,10 +61,12 @@ export default new Vuex.Store({
                 }
             })
             state.week[day] = new_arr
-
-            console.log(state.week)
         }
     },
-    actions: {},
+    actions: {
+        fetchWeek(store) {
+            console.log(store.state.week)
+        }
+    },
     modules: {}
 })
