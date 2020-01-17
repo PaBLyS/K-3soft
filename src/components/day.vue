@@ -1,6 +1,6 @@
 <template>
   <div class="day" @mouseup="cursor = false" @mouseleave="cursor = false">
-    <div class="day-block day-label">{{label}}</div>
+    <div :class="['day-block', 'day-label', oneCheck ? 'day-label__check' : null]">{{label}}</div>
     <div class="day-block day-all" @click="editAllDay"></div>
     <div
       v-for="(item, index) in status"
@@ -51,19 +51,21 @@ export default {
   },
   computed: {
     fullDay() {
-      return this.status.indexOf(false) === -1
+      return this.status.indexOf(false) === -1;
+    },
+    oneCheck() {
+      return this.status.indexOf(true) !== -1;
     }
   },
   methods: {
     editStatus(index, edit) {
-      if (edit) this.cursor = true
-      if (!this.cursor) return
-      this.$set(this.status, index, !this.status[index])
-      this.$emit('edit-day', this.label ,this.status)
+      if (edit) this.cursor = true;
+      if (!this.cursor) return;
+      this.$set(this.status, index, !this.status[index]);
+      this.$emit("edit-day", this.label, this.status);
     },
     editAllDay() {
-      this.status = [...this.status.fill(!this.fullDay)]
-      console.log(this.fullDay)
+      this.status = [...this.status.fill(!this.fullDay)];
     }
   }
 };
@@ -86,6 +88,10 @@ export default {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+
+    &__check {
+      background-color: #aaaaaa;
+    }
   }
 
   &-all {

@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     editDay(day, item) {
-      console.log(day);
+      // console.log(day);
     }
   }
 };
