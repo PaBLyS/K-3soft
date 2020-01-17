@@ -1,7 +1,7 @@
 <template>
   <div class="day" @mouseup="cursor = false" @mouseleave="cursor = false">
     <div class="day-block day-label">{{label}}</div>
-    <div class="day-block day-all"></div>
+    <div class="day-block day-all" @click="editAllDay"></div>
     <div
       v-for="(item, index) in status"
       :class="{'day-block': true, 'day-hour': true, 'entered': item}"
@@ -49,12 +49,21 @@ export default {
       ]
     };
   },
+  computed: {
+    fullDay() {
+      return this.status.indexOf(false) === -1
+    }
+  },
   methods: {
     editStatus(index, edit) {
-      const { status } = this;
-      if (edit) this.cursor = true;
-      if (!this.cursor) return;
-      this.$set(status, index, !status[index]);
+      if (edit) this.cursor = true
+      if (!this.cursor) return
+      this.$set(this.status, index, !this.status[index])
+      this.$emit('edit-day', this.label ,this.status)
+    },
+    editAllDay() {
+      this.status = [...this.status.fill(!this.fullDay)]
+      console.log(this.fullDay)
     }
   }
 };
@@ -81,6 +90,7 @@ export default {
 
   &-all {
     width: 40px;
+    background-color: #447788;
   }
 
   &-hour {

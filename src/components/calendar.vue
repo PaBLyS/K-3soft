@@ -1,6 +1,11 @@
 <template>
   <div>
-    <day v-for="(value, label, index) in data" :label="label" :key="label+index" />
+    <day
+      v-for="(value, label, index) in week"
+      :label="label"
+      :key="label+index"
+      @edit-day="editDay"
+    />
   </div>
 </template>
 
@@ -12,7 +17,7 @@ export default {
   components: { day },
   data() {
     return {
-      data: {
+      week: {
         mo: [{ bt: 240, et: 779 }],
         tu: [],
         we: [],
@@ -25,6 +30,11 @@ export default {
         su: []
       }
     };
+  },
+  methods: {
+    editDay(day, item) {
+      console.log(day);
+    }
   }
 };
 </script>
