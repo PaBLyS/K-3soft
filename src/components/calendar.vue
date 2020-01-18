@@ -4,42 +4,26 @@
       <div class="time-all">All day</div>
       <div class="time-hour" v-for="index in 8" :key="index">{{(index - 1) * 3}}:00</div>
     </div>
-    <!-- day компонент одного дня розбитий на години -->
-    <day
-      v-for="(value, label, index) in week"
-      :label="label"
-      :value="value"
-      :key="label+index"
-      ref="child"
-    />
+    <day v-for="(value, index) in getWeekName" :index="index" :key="`${value}-${index}`" />
     <div>
-      <button @click="clearWeek" class="calendar-btn">Clear</button>
-      <button @click="saveWeek" class="calendar-btn">Save</button>
+      <button class="calendar-btn">Clear</button>
+      <button @click="fetchWeek" class="calendar-btn">Save</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import day from "./day";
 
 export default {
   name: "calendar",
   components: { day },
   data() {
-    return {
-      week: this.$store.getters.getWeek // отримання даних з store
-    };
+    return {};
   },
-  methods: {
-    // виклик в дочірніх елементах функції для очищення дня
-    clearWeek() {
-      this.$refs.child.forEach(elem => elem.clearDay());
-    },
-    // виклик функції для зберігання і відправки даних на сервер
-    saveWeek() {
-      this.$store.dispatch("fetchWeek");
-    }
-  }
+  computed: { ...mapGetters(["getWeekName"]) },
+  methods: { ...mapMutations([]), ...mapActions(["fetchWeek"]) }
 };
 </script>
 

@@ -1,59 +1,47 @@
 <template>
-  <!-- mouseup та mouseleave задають статус курсору під час виділення, якщо він покунув блок або кнопку було відпущено, елементи перестають виділятися -->
-  <div class="day" @mouseup="cursor = false" @mouseleave="cursor = false">
-    <div :class="['day-block', 'day-label', oneCheck ? 'day-label__check' : null]">{{label}}</div>
-    <div :class="['day-block day-all', fullDay ? 'day-all__check' : null]" @click="editAllDay"></div>
-    <!-- цикл виводу годин, якщо курсор покинув блок або кнопку було відпущено, блок помічається як вибраний -->
+  <div class="day">
     <div
-      v-for="(item, index) in status"
-      :class="{'day-block': true, 'day-hour': true, 'entered': item}"
-      :key="index"
-      @mouseover="editStatus(index)"
-      @mousedown.prevent="editStatus(index, true)"
-    ></div>
+      :class="['day-block', 'day-label', true ? 'day-label__check' : null]"
+    >{{getWeekName[index]}}</div>
+    <div :class="['day-block day-all', true ? 'day-all__check' : null]"></div>
+    <div style="display: flex" @mouseleave="cursor = false">
+      <div
+        v-for="(item, index) in 24"
+        :class="{'day-block': true, 'day-hour': true, 'entered': true}"
+        :key="index"
+        @mousedown="downMouse(index)"
+        @mouseup="upMouse(index)"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from "vuex";
+
 export default {
   name: "day",
   props: {
-    label: String,
-    value: Array
+    index: Number
   },
   data() {
     return {
-      cursor: false,
-      status: [...this.value]
+      interval: new Array(2),
+      cursor: false
     };
   },
-  computed: {
-    // перевірка чи весь день вибраний
-    fullDay() {
-      return this.status.indexOf(false) === -1;
-    },
-    // перевірка чи хоче б один день вибраний
-    oneCheck() {
-      return this.status.indexOf(true) !== -1;
-    }
-  },
+  computed: { ...mapGetters(["getWeek", "getWeekName"]) },
   methods: {
-    // зміна статусу одного блоку
-    editStatus(index, edit) {
-      if (edit) this.cursor = true;
-      if (!this.cursor) return; // припинення функції якщо кусор не над блоком
-      this.$set(this.status, index, !this.status[index]); // реактивність масиву
-      this.$store.commit("setWeek", { day: this.label, arr: this.status }); // внесення даних в store
+    ...mapMutations([]),
+    downMouse(index) {
+      this.cursor = true;
+      this.interval[0] = index;
     },
-    // зміна статусу всього дня
-    editAllDay() {
-      this.status = [...this.status.fill(!this.fullDay)];
-      this.$store.commit("setWeek", { day: this.label, arr: this.status }); // внесення даних в store
-    },
-    // очищення дня
-    clearDay() {
-      this.status = [...this.status.fill(false)];
-      this.$store.commit("setWeek", { day: this.label, arr: this.status });
+    upMouse(index) {
+      if (this.cursor) {
+        this.interval[1] = index;
+        console.log(this.interval);
+      }
     }
   }
 };
