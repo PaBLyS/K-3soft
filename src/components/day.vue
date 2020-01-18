@@ -1,28 +1,29 @@
 <template>
   <div class="day">
-    <div
-      :class="['day-block', 'day-label', true ? 'day-label__check' : null]"
-    >{{getWeekName[index]}}</div>
+    <div :class="['day-block', 'day-label', true ? 'day-label__check' : null]">{{name}}</div>
     <div :class="['day-block day-all', true ? 'day-all__check' : null]"></div>
     <div style="display: flex" @mouseleave="cursor = false">
       <div
         v-for="(item, index) in 24"
-        :class="{'day-block': true, 'day-hour': true, 'entered': true}"
         :key="index"
-        @mousedown="downMouse(index)"
+        @mousedown.prevent="downMouse(index)"
         @mouseup="upMouse(index)"
-      ></div>
+      >
+        <hour :index="index" :name="name" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import hour from "../components/hour";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "day",
+  components: { hour },
   props: {
-    index: Number
+    name: String
   },
   data() {
     return {
@@ -30,9 +31,11 @@ export default {
       cursor: false
     };
   },
-  computed: { ...mapGetters(["getWeek", "getWeekName"]) },
+  computed: {
+    ...mapGetters(["getWeek"])
+  },
   methods: {
-    ...mapMutations([]),
+    ...mapMutations(["setWeekInterval"]),
     downMouse(index) {
       this.cursor = true;
       this.interval[0] = index;
@@ -40,7 +43,17 @@ export default {
     upMouse(index) {
       if (this.cursor) {
         this.interval[1] = index;
-        console.log(this.interval);
+        this.interval.sort((a, b) => a - b);
+
+        let obj = {
+          bt: this.interval[0] * 60,
+          et: (this.interval[1] + 1) * 60 - 1
+        };
+
+        this.setWeekInterval({
+          name: this.name,
+          obj: obj
+        });
       }
     }
   }
@@ -83,18 +96,6 @@ export default {
       background-size: 60%;
       background-position: center;
       background-repeat: no-repeat;
-    }
-  }
-
-  &-hour {
-    background-color: #ffffff;
-
-    &:hover {
-      background-color: #aaaaaa;
-    }
-
-    &.entered {
-      background-color: #777777;
     }
   }
 }

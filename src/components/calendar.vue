@@ -4,7 +4,7 @@
       <div class="time-all">All day</div>
       <div class="time-hour" v-for="index in 8" :key="index">{{(index - 1) * 3}}:00</div>
     </div>
-    <day v-for="(value, index) in getWeekName" :index="index" :key="`${value}-${index}`" />
+    <day v-for="(value, index) in getWeekName" :name="value" :key="`${value}-${index}`" />
     <div>
       <button class="calendar-btn">Clear</button>
       <button @click="fetchWeek" class="calendar-btn">Save</button>
@@ -23,7 +23,10 @@ export default {
     return {};
   },
   computed: { ...mapGetters(["getWeekName"]) },
-  methods: { ...mapMutations([]), ...mapActions(["fetchWeek"]) }
+  methods: {
+    ...mapMutations([]),
+    ...mapActions(["fetchWeek"])
+  }
 };
 </script>
 

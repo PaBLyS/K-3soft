@@ -28,7 +28,10 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-
+        setWeekInterval(store, data) {
+            console.log(data)
+            store.week[data.name].push(data.obj)
+        }
     },
     actions: {
         // вивод результату в консоль
