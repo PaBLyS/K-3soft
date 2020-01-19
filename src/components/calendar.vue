@@ -6,7 +6,7 @@
     </div>
     <day v-for="(value, index) in getWeekName" :name="value" :key="`${value}-${index}`" />
     <div>
-      <button class="calendar-btn">Clear</button>
+      <button @click="clearAllDay" class="calendar-btn">Clear</button>
       <button @click="fetchWeek" class="calendar-btn">Save</button>
     </div>
   </div>
@@ -24,7 +24,7 @@ export default {
   },
   computed: { ...mapGetters(["getWeekName"]) },
   methods: {
-    ...mapMutations([]),
+    ...mapMutations(["clearAllDay"]),
     ...mapActions(["fetchWeek"])
   }
 };

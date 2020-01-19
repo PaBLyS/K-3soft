@@ -1,9 +1,5 @@
 <template>
-  <div :class="['hour', 'hour', getStatus ? 'entered' : null]">
-    {{index * 60}}
-    <br />
-    {{(index + 1) * 60 - 1}}
-  </div>
+  <div :class="['hour', 'hour', getStatus ? 'entered' : null]"></div>
 </template>
 
 <script>

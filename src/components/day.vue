@@ -1,7 +1,10 @@
 <template>
   <div class="day">
-    <div :class="['day-block', 'day-label', true ? 'day-label__check' : null]">{{name}}</div>
-    <div :class="['day-block day-all', true ? 'day-all__check' : null]"></div>
+    <div :class="['day-block', 'day-label', checkOneDay ? 'day-label__check' : null]">{{name}}</div>
+    <div
+      :class="['day-block day-all', checkAllDays ? 'day-all__check' : null]"
+      @click="editAllDays(name)"
+    ></div>
     <div style="display: flex" @mouseleave="cursor = false">
       <div
         v-for="(item, index) in 24"
@@ -32,10 +35,20 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getWeek"])
+    ...mapGetters(["getWeek"]),
+    checkOneDay() {
+      return !!this.getWeek[this.name].length;
+    },
+    checkAllDays() {
+      return (
+        this.getWeek[this.name].length === 1 &&
+        this.getWeek[this.name][0].bt === 0 &&
+        this.getWeek[this.name][0].et === 1439
+      );
+    }
   },
   methods: {
-    ...mapMutations(["setWeekInterval"]),
+    ...mapMutations(["setWeekInterval", "editAllDays"]),
     downMouse(index) {
       this.cursor = true;
       this.interval[0] = index;
