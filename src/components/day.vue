@@ -1,8 +1,8 @@
 <template>
   <div class="day">
-    <div :class="['day-block', 'day-label', checkOneDay ? 'day-label__check' : null]">{{name}}</div>
+    <div :class="['day-block', 'day-label', checkOneDay && 'day-label__check']">{{name}}</div>
     <div
-      :class="['day-block day-all', checkAllDays ? 'day-all__check' : null]"
+      :class="['day-block day-all', checkAllDays && 'day-all__check']"
       @click="editAllDays(name)"
     ></div>
     <div style="display: flex" @mouseleave="cursor = false">
@@ -19,12 +19,13 @@
 </template>
 
 <script>
-import hour from "../components/hour";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "day",
-  components: { hour },
+  components: {
+    hour: () => import("../components/hour")
+  },
   props: {
     name: String
   },

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['hour', 'hour', getStatus ? 'entered' : null]"></div>
+  <div :class="['hour', getStatus && 'entered']"></div>
 </template>
 
 <script>
@@ -13,18 +13,10 @@ export default {
   computed: {
     ...mapGetters(["getWeek"]),
     getStatus() {
-      let status = false;
-
-      this.getWeek[this.name].forEach(elem => {
-        if (
-          elem.bt <= this.index * 60 &&
-          (this.index + 1) * 60 - 1 <= elem.et
-        ) {
-          status = true;
-        }
-      });
-
-      return status;
+      return this.getWeek[this.name].some(
+        elem =>
+          elem.bt <= this.index * 60 && (this.index + 1) * 60 - 1 <= elem.et
+      );
     }
   }
 };

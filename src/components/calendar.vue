@@ -14,11 +14,12 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import day from "./day";
 
 export default {
   name: "calendar",
-  components: { day },
+  components: {
+    day: () => import("../components/day")
+  },
   data() {
     return {};
   },
