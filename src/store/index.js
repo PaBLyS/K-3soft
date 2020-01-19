@@ -34,13 +34,11 @@ export default new Vuex.Store({
             let push = true
 
             store.week[name].forEach((elem, index) => {
-
                 if (interval.bt < elem.bt && interval.et > elem.bt || interval.bt < elem.et && interval.et > elem.et) {
                     interval = {
                         bt: interval.bt <= elem.bt ? interval.bt : elem.bt,
                         et: interval.et >= elem.et ? interval.et : elem.et
                     }
-
                     del.push(index)
                 } else if (interval.bt > elem.bt && interval.et < elem.et) {
                     del.push(index)
@@ -69,7 +67,7 @@ export default new Vuex.Store({
             }
         },
         clearAllDay(store) {
-            for (let name in store.week) store.week[name] = []
+            store.weekName.forEach(elem => store.week[elem] = [])
         }
     },
     actions: {
