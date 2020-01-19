@@ -1,5 +1,9 @@
 <template>
-  <div :class="['hour', 'hour', getStatus ? 'entered' : null]"></div>
+  <div :class="['hour', 'hour', getStatus ? 'entered' : null]">
+    {{index * 60}}
+    <br />
+    {{(index + 1) * 60 - 1}}
+  </div>
 </template>
 
 <script>
@@ -23,9 +27,7 @@ export default {
           status = true;
         }
       });
-      console.log(
-        `index - ${this.index} | name - ${this.name} | status - ${status}`
-      );
+
       return status;
     }
   }
@@ -34,11 +36,11 @@ export default {
 
 <style lang="scss" scoped>
 .hour {
-  box-sizing: border-box;
   width: 25px;
   height: 40px;
   border: 1px solid #333;
   background-color: #ffffff;
+  font-size: 10px;
 
   &:hover {
     background-color: #aaaaaa;

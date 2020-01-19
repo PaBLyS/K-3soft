@@ -29,14 +29,39 @@ export default new Vuex.Store({
     },
     mutations: {
         setWeekInterval(store, data) {
-            console.log(data)
-            store.week[data.name].push(data.obj)
+            let { name, obj } = data
+            let del = []
+            let push = true
+
+            store.week[name].forEach((elem, index) => {
+
+                if (obj.bt < elem.bt && obj.et > elem.bt || obj.bt < elem.et && obj.et > elem.et) {
+                    obj = {
+                        bt: obj.bt <= elem.bt ? obj.bt : elem.bt,
+                        et: obj.et >= elem.et ? obj.et : elem.et
+                    }
+
+                    del.push(index)
+                } else if (obj.bt > elem.bt && obj.et < elem.et) {
+                    del.push(index)
+                } else if (obj.bt === elem.bt && obj.et === elem.et) {
+                    del.push(index)
+                    push = false
+                }
+            })
+
+            store.week[name].sort((a, b) => a.bt - b.bt)
+
+            store.week[name].splice(Math.min(...del), del.length)
+
+            if (push) {
+                store.week[name].push(obj)
+            }
         }
     },
     actions: {
-        // вивод результату в консоль
-        fetchWeek(store) {
-            console.log(store.state.week)
+        fetchWeek(context) {
+            console.log(context.getters.getWeek)
         }
     },
     modules: {}
