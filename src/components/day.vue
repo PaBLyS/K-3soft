@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      interval: new Array(2),
+      startPoint: 0,
       cursor: false
     };
   },
@@ -41,38 +41,27 @@ export default {
       return !!this.getWeek[this.name].length;
     },
     checkAllDays() {
-      return (
-        this.getWeek[this.name].length === 1 &&
-        this.getWeek[this.name][0].bt === 0 &&
-        this.getWeek[this.name][0].et === 1439
-      );
+      const [day] = this.getWeek[this.name];
+      return day && !day.bt && day.et === 1439;
     }
   },
   methods: {
     ...mapMutations(["setWeekInterval", "editAllDays"]),
-    downMouse(index) {
+    downMouse(point) {
       this.cursor = true;
-      this.interval[0] = index;
+      this.startPoint = point;
     },
-    upMouse(index) {
-      if (this.cursor) {
-        this.interval[1] = index;
-        this.interval.sort((a, b) => a - b);
-
-        let obj = {
-          bt: this.interval[0] * 60,
-          et: (this.interval[1] + 1) * 60 - 1
-        };
-
-        this.setWeekInterval({
-          name: this.name,
-          obj: obj
-        });
-      }
+    upMouse(endPoint) {
+      if (!this.cursor) return;
+      const bt = Math.min(this.startPoint, endPoint) * 60;
+      const et = Math.max(this.startPoint, endPoint + 1) * 60 - 1;
+      this.setWeekInterval({ name: this.name, interval: { bt, et } });
     }
   }
 };
 </script>
+
+
 
 <style lang="scss">
 .day {

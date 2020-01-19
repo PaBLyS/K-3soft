@@ -29,22 +29,22 @@ export default new Vuex.Store({
     },
     mutations: {
         setWeekInterval(store, data) {
-            let { name, obj } = data
+            let { name, interval } = data
             let del = new Array()
             let push = true
 
             store.week[name].forEach((elem, index) => {
 
-                if (obj.bt < elem.bt && obj.et > elem.bt || obj.bt < elem.et && obj.et > elem.et) {
-                    obj = {
-                        bt: obj.bt <= elem.bt ? obj.bt : elem.bt,
-                        et: obj.et >= elem.et ? obj.et : elem.et
+                if (interval.bt < elem.bt && interval.et > elem.bt || interval.bt < elem.et && interval.et > elem.et) {
+                    interval = {
+                        bt: interval.bt <= elem.bt ? interval.bt : elem.bt,
+                        et: interval.et >= elem.et ? interval.et : elem.et
                     }
 
                     del.push(index)
-                } else if (obj.bt > elem.bt && obj.et < elem.et) {
+                } else if (interval.bt > elem.bt && interval.et < elem.et) {
                     del.push(index)
-                } else if (obj.bt === elem.bt || obj.et === elem.et) {
+                } else if (interval.bt === elem.bt || interval.et === elem.et) {
                     del.push(index)
                     push = false
                 }
@@ -52,10 +52,10 @@ export default new Vuex.Store({
 
             store.week[name].splice(Math.min(...del), del.length)
 
-            if (push) {
-                store.week[name].push(obj)
-                store.week[name].sort((a, b) => a.bt - b.bt)
-            }
+            if (!push) return;
+
+            store.week[name].push(interval)
+            store.week[name].sort((a, b) => a.bt - b.bt)
         },
         editAllDays(store, name) {
             if (store.week[name].length === 0 || (
